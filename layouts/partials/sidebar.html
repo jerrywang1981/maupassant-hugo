@@ -1,8 +1,12 @@
 <div id="secondary">
     <section class="widget">
+        {{ partial "profile" . }}
+    </section>
+
+    <section class="widget">
         {{ partial "search_form" . }}
     </section>
-    
+
     <section class="widget">
         {{ partial "recent_post" . }}
     </section>
