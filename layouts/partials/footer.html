@@ -65,7 +65,7 @@
             })();
         </script>
     {{- end -}}
-    
+
     <!-- sequence必须要在flow加载之后，否则sequence渲染不成功，原因待分析 -->
     <!-- js-sequence-diagrams -->
     {{- if and (or .Params.sequenceDiagrams.enable (and .Site.Params.sequenceDiagrams.enable (ne .Params.sequenceDiagrams.enable false))) (or .IsPage .IsHome) -}}
@@ -101,7 +101,7 @@
         })();
         </script>
     {{- end -}}
-    
+
     <script type="text/javascript">
         window.MathJax = {
             tex2jax: {
@@ -115,6 +115,7 @@
 
 <a id="rocket" href="#top"></a>
 <script type="text/javascript" src='{{ "js/totop.js?v=0.0.0" | relURL }}' async=""></script>
+<script type="text/javascript" src='{{ "js/background-shape.js?v=0.0.0" | relURL }}' async=""></script>
 {{ template "_internal/google_analytics_async.html" . }}
 
 {{ if .Site.Params.busuanzi }}
