@@ -25,17 +25,20 @@ Maupassant theme, ported to Hugo.
 8. 支持文章按年份日期进行归档
 9. 支持GA分析统计
 17. 不蒜子页面计数器支持
-11. 代码高亮、代码行号
+11. 代码高亮、代码行号、代码拷贝
 10. sitemap站点地图
 5. RSS支持，并且可以自动发现RSS
 14. Google站内搜索
 15. See Also 支持
 16. Disqus评论支持
 18. 自定义css、js
-19. utteranc评论
+19. utteranc和[waline](https://waline.js.org)评论
 20. 部分自定义的shortcode
 21. 文章自定义摘要
 22. 自定义广告支持
+23. 自定义备案信息
+24. 自定义图片CDN
+25. 图片点击放大
 
 ## 下载安装
 
@@ -59,14 +62,6 @@ theme = "maupassant"
 #### 快速开始
 
 在主题的 [exampleSite](exampleSite/) 示例目录下有`config.toml `文件，把`config.toml `文件复制到你的站点目录下，然后根据自己的需求修改即可
-
-**PS: 一定要使用`post`目录，而不是`posts`,一定要记住，所以如果你使用`hugo`命令，你应该`hugo new post/filename.md`这样创建**
-
-**PS: 一定要使用`post`目录，而不是`posts`,一定要记住，所以如果你使用`hugo`命令，你应该`hugo new post/filename.md`这样创建**
-
-**PS: 一定要使用`post`目录，而不是`posts`,一定要记住，所以如果你使用`hugo`命令，你应该`hugo new post/filename.md`这样创建**
-
-
 
 #### 代码高亮
 
@@ -183,9 +178,10 @@ type: "search"
 
 #### 添加GA分析统计
 
-该主题已经支持了GA分析统计，只需要在`config.toml`配置里加入如下配置即可。
+该主题已经支持了GA4分析统计，只需要在`config.toml`配置里加入如下配置即可。
+一定要使用最新的GA4分析，填写`衡量ID`，以`G-`开头。
 ```toml
-googleAnalytics = "GA ID"
+googleAnalytics = "G-xxxxxxxxxx"
 ```
 
 #### 文章归档支持
@@ -201,6 +197,47 @@ type: archives
 `title`和`description`都可以换成你自己的，但是`type`必须是`archives`。
 
 `content/archives/index.md`表示在`content/archives/`目录下的`index.md`文件
+
+#### 添加备案信息
+
+现在网站要求添加备案信息，本主题也进行了支持，使用方式非常简单，在`config.toml`的`params`配置中添加如下设置：
+
+```toml
+[params]
+  beian = "粤ICP备XXXXXXX号-1"
+```
+
+以上配置中的备案信息要换成自己的
+
+#### 图片点击放大
+
+将会引入jquery.js 和 fancybox 的css和js
+
+```toml
+[params]
+  fancybox = true
+```
+
+#### 图片CDN
+
+将会在mark中引入的图片src前面加上设置的host, 有http前缀的路径不会在前面加入host
+注意: 路径后面不要带/ 
+> 可直接使用jsdelivr加速 后面跟上github仓库即可 
+
+```toml
+[params.image_cdn]
+    enable = true
+    Host = "https://cdn.jsdelivr.net/gh/user/user.github.io"
+```
+
+#### JS CDN
+
+国内建议换成：cdn.bootcdn.net
+
+```toml
+[params]
+  cdnJsSite = "cdn.bootcdn.net" # 默认：cdnjs.cloudflare.com
+```
 
 #### Disqus
 
@@ -251,6 +288,18 @@ summaryLength = 140
 3. `title` 按页面title标题的方式。
 
 其他还有几个不常用，这里就不再赘述了。
+#### Waline 评论系统
+Waline一款从 Valine 衍生的带后端评论系统。快速、安全、免费部署、支持评论通知。详见[https://waline.js.org/](https://waline.js.org/)
+
+将```enable```值改为```true```即可启用
+
+```serverURL```可根据官网部署教程获取
+```toml
+[params.waline]
+    enable = false
+    placeholder = "说点什么吧..."
+    serverURL = "Your waline serverURL" #换成你的serverURL
+```
 
 #### 不蒜子页面计数器支持
 
@@ -298,7 +347,9 @@ disablePathToLower = true
 ```
 
 * youku（youku.html）
+
 #### 绘图支持
+
 - 序列图(使用[js-sequence](https://bramp.github.io/js-sequence-diagrams/))
   1. 全局使用，在`config.toml`中添加如下配置
   
@@ -318,7 +369,7 @@ disablePathToLower = true
    将代码块的语言标识符设置为`sequence`。例如
   
   ```
-  ​```sequence
+  ```sequence
   Alice->Bob: Hello Bob, how are you?
   Note right of Bob: Bob thinks
   Bob-->Alice: I am good thanks!
@@ -345,7 +396,7 @@ disablePathToLower = true
    将代码块的语言标识符设置为`flowchat`或者`flow`。例如
   
    ```
-  ​```flow
+  ```flow
   st=>start: Start
   op=>operation: Your Operation
   cond=>condition: Yes or No?
@@ -369,7 +420,7 @@ disablePathToLower = true
   将代码块的语言标识符设置为`viz-<engin>`， engin是选用的graphviz绘图引擎的名称，包括`circo`、`dot`、`fdp`、`neato` 、`osage`和`twopi`。例如
   
   ```
-  ​```viz-dot
+  ```viz-dot
   digraph G {
   
   	subgraph cluster_0 {
@@ -399,6 +450,24 @@ disablePathToLower = true
   }
   ​```
   ```
+#### 支持在首页上隐藏某篇文章
+
+将 front matter 中的```hiddenFromHomePage```设置为```true``` 即可
+
+ *默认为```false```*
+
+```toml
++++
+title = '{{ replace .Name "-" " " | title }}'
+tags = []
+categories = []
+date = "{{ .Date }}"
+toc = true
+draft = true
+hiddenFromHomePage = false
++++
+
+```
 
 ## 贡献
 
